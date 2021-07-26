@@ -1,0 +1,28 @@
+server:
+  mode: "debug"
+  name: "application"
+  port: 8080
+  secret: ""
+
+logger:
+  level: "debug"
+  filename: "./logs/web_app.log"
+  maxSize: 200
+  maxAge: 30
+  maxBackups: 7
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "123456"
+  dbname: "gin_web"
+  maxOpenConns: 100
+  maxIdleConns: 200
+
+redis:
+  db: 0
+  host: "localhost"
+  port: 6379
+  password: ""
+  poolSize: 100
