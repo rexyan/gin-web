@@ -33,3 +33,17 @@ func (dao *UserDao) GetByName(name string) (user *models.User, err error) {
 	}
 	return &userInstance, nil
 }
+
+func (dao *UserDao) Login(username, encryptPassword string) (user *models.User, err error) {
+	var userInstance models.User
+	sqlStr := "select user_id, username, password, email, gender from user where username=? and password=?"
+	if err := mysql.DB.Get(&userInstance, sqlStr, username, encryptPassword); err != nil {
+		if err == sql.ErrNoRows {
+			zap.L().Error("user login error", zap.Error(err))
+			return nil, nil
+		} else {
+			return nil, err
+		}
+	}
+	return &userInstance, nil
+}

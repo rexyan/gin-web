@@ -39,3 +39,12 @@ func EncryptPassword(password string) string {
 	sum := hash.Sum([]byte(password))
 	return hex.EncodeToString(sum)
 }
+
+func LoginService(param *validator.LoginValidator) (user *models.User, err error) {
+	user, err = userDao.Login(param.Username, EncryptPassword(param.Password))
+	// TODO set user info
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}

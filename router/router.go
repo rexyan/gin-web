@@ -33,5 +33,6 @@ func Setup() *gin.Engine {
 	})
 
 	r.POST("/api/v1/register", controller.RegisterHandler)
+	r.POST("/api/v1/login", controller.LoginHandler)
 	return r
 }

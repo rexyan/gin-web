@@ -37,3 +37,24 @@ func RegisterHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, "ok")
 }
+
+func LoginHandler(c *gin.Context) {
+	loginValidator := new(v.LoginValidator)
+	if err := c.ShouldBindJSON(loginValidator); err != nil {
+		zap.L().Error("loginValidator error", zap.Error(err))
+		validatorError, ok := err.(validator.ValidationErrors)
+		if ok {
+			c.JSON(http.StatusBadRequest, validatorError.Translate(v.Trans))
+			return
+		}
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	if user, err := service.LoginService(loginValidator); err != nil {
+		zap.L().Error("user login error", zap.Error(err))
+		c.JSON(http.StatusBadRequest, "user login error")
+		return
+	} else {
+		c.JSON(http.StatusOK, user)
+	}
+}
