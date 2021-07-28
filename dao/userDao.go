@@ -25,9 +25,9 @@ func (dao *UserDao) GetByName(name string) (user *models.User, err error) {
 	sqlStr := "select user_id, username, password, email, gender from user where username=?"
 	if err := mysql.DB.Get(&userInstance, sqlStr, name); err != nil {
 		if err == sql.ErrNoRows {
-			zap.L().Error("get user by name error", zap.Error(err))
 			return nil, nil
 		} else {
+			zap.L().Error("get user by name error", zap.Error(err))
 			return nil, err
 		}
 	}
@@ -40,8 +40,6 @@ func (dao *UserDao) Login(username, encryptPassword string) (user *models.User, 
 	if err := mysql.DB.Get(&userInstance, sqlStr, username, encryptPassword); err != nil {
 		if err == sql.ErrNoRows {
 			zap.L().Error("user login error", zap.Error(err))
-			return nil, nil
-		} else {
 			return nil, err
 		}
 	}

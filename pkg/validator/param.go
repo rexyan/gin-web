@@ -50,7 +50,7 @@ type RegisterValidator struct {
 	Password   string `json:"password" binding:"required"`
 	RePassword string `json:"re_password" binding:"required,eqfield=Password"`
 	Email      string `json:"email" binding:"required,email"`
-	Gender     uint8  `json:"gender" binding:"gte=1,lte=130"`
+	Gender     uint8  `json:"gender" binding:"gte=0,lte=1"`
 }
 
 type LoginValidator struct {
