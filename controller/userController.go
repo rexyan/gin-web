@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"web_app/pkg/response"
 	v "web_app/pkg/validator"
 	"web_app/service"
 
@@ -19,23 +20,23 @@ func RegisterHandler(c *gin.Context) {
 		zap.L().Error("registerValidator error", zap.Error(err))
 		validatorError, ok := err.(validator.ValidationErrors)
 		if ok {
-			c.JSON(http.StatusBadRequest, validatorError.Translate(v.Trans))
+			response.BuildResponseWithMsg(c, nil, validatorError.Translate(v.Trans), response.ParamError, http.StatusBadRequest)
 			return
 		}
-		c.JSON(http.StatusBadRequest, err.Error())
+		response.BuildResponse(c, nil, response.ParamError, http.StatusBadRequest)
 		return
 	}
 	if service.UserExistByName(registerValidator.Username) {
 		zap.L().Error("user exist")
-		c.JSON(http.StatusBadRequest, "user exist")
+		response.BuildResponse(c, nil, response.UserExist, http.StatusBadRequest)
 		return
 	}
 	if err := service.RegisterService(registerValidator); err != nil {
 		zap.L().Error("user register error", zap.Error(err))
-		c.JSON(http.StatusBadRequest, "user register error")
+		response.BuildResponse(c, nil, response.UserRegisterError, http.StatusBadRequest)
 		return
 	}
-	c.JSON(http.StatusOK, "ok")
+	response.BuildSuccessResponse(c, "ok")
 }
 
 func LoginHandler(c *gin.Context) {
@@ -44,7 +45,7 @@ func LoginHandler(c *gin.Context) {
 		zap.L().Error("loginValidator error", zap.Error(err))
 		validatorError, ok := err.(validator.ValidationErrors)
 		if ok {
-			c.JSON(http.StatusBadRequest, validatorError.Translate(v.Trans))
+			response.BuildResponseWithMsg(c, nil, validatorError.Translate(v.Trans), response.ParamError, http.StatusBadRequest)
 			return
 		}
 		c.JSON(http.StatusBadRequest, err.Error())
@@ -52,9 +53,9 @@ func LoginHandler(c *gin.Context) {
 	}
 	if user, err := service.LoginService(loginValidator); err != nil {
 		zap.L().Error("user login error", zap.Error(err))
-		c.JSON(http.StatusBadRequest, "user login error")
+		response.BuildResponse(c, nil, response.UserLoginError, http.StatusBadRequest)
 		return
 	} else {
-		c.JSON(http.StatusOK, user)
+		response.BuildSuccessResponse(c, user)
 	}
 }
