@@ -2,7 +2,7 @@ server:
   mode: "debug"
   name: "application"
   port: 8080
-  secret: ""
+  secret: "123"
 
 logger:
   level: "debug"

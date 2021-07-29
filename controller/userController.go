@@ -2,6 +2,8 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
+	"web_app/pkg/jwt"
 	"web_app/pkg/response"
 	v "web_app/pkg/validator"
 	"web_app/service"
@@ -12,6 +14,19 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+var userService = new(service.UserService)
+
+func RefreshTokenHandler(c *gin.Context) {
+	refreshToken := c.Query("refresh_token")
+	if _, err := jwt.ParseToken(refreshToken); err != nil {
+		response.BuildResponse(c, nil, response.RefreshTokenError, http.StatusBadRequest)
+		return
+	}
+	user := userService.GetCurrentUser(c)
+	accessToken, _ := userService.GenerateJwtToken(strconv.FormatInt(user.UserID, 10), user.UserName)
+	response.BuildSuccessResponse(c, accessToken)
+}
 
 func RegisterHandler(c *gin.Context) {
 	// 参数校验
@@ -26,12 +41,12 @@ func RegisterHandler(c *gin.Context) {
 		response.BuildResponse(c, nil, response.ParamError, http.StatusBadRequest)
 		return
 	}
-	if service.UserExistByName(registerValidator.Username) {
+	if userService.UserExistByName(registerValidator.Username) {
 		zap.L().Error("user exist")
 		response.BuildResponse(c, nil, response.UserExist, http.StatusBadRequest)
 		return
 	}
-	if err := service.RegisterService(registerValidator); err != nil {
+	if err := userService.RegisterService(registerValidator); err != nil {
 		zap.L().Error("user register error", zap.Error(err))
 		response.BuildResponse(c, nil, response.UserRegisterError, http.StatusBadRequest)
 		return
@@ -51,11 +66,16 @@ func LoginHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	if user, err := service.LoginService(loginValidator); err != nil {
+	if user, err := userService.LoginService(loginValidator); err != nil {
 		zap.L().Error("user login error", zap.Error(err))
 		response.BuildResponse(c, nil, response.UserLoginError, http.StatusBadRequest)
 		return
 	} else {
-		response.BuildSuccessResponse(c, user)
+		accessToken, refreshToken := userService.GenerateJwtToken(strconv.FormatInt(user.UserID, 10), user.UserName)
+		response.BuildSuccessResponse(c, gin.H{
+			"user":          user,
+			"access_token":  accessToken,
+			"refresh_token": refreshToken,
+		})
 	}
 }

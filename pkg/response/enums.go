@@ -7,6 +7,7 @@ const (
 	UserExist                   string = "30013"
 	UserRegisterError           string = "30014"
 	UserLoginError              string = "30015"
+	RefreshTokenError           string = "30016"
 )
 
 var Message = map[string]string{
@@ -16,4 +17,5 @@ var Message = map[string]string{
 	UserExist:                   "用户已存在",
 	UserRegisterError:           "用户注册错误",
 	UserLoginError:              "用户登录失败",
+	RefreshTokenError:           "获取 RefreshToken 失败",
 }

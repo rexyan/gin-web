@@ -67,6 +67,7 @@ func Init() (err error) {
 		return err
 	}
 
+	// 配置动态修改
 	viper.WatchConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		fmt.Println("viper config change event!")

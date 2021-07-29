@@ -6,12 +6,11 @@ import (
 	"web_app/pkg/logger"
 	"web_app/settings"
 
-	"github.com/spf13/viper"
-
 	"github.com/gin-gonic/gin"
 )
 
 func setRunMode() {
+	// 设置运行模式。默认值: debug, 支持 release, test, debug
 	switch settings.Config.ServerConfig.Mode {
 	case gin.ReleaseMode:
 		gin.SetMode(gin.ReleaseMode)
@@ -29,10 +28,11 @@ func Setup() *gin.Engine {
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 	r.GET("/health", func(context *gin.Context) {
-		context.JSON(http.StatusOK, viper.Get("server.name"))
+		context.JSON(http.StatusOK, settings.Config.ServerConfig.Name)
 	})
 
-	r.POST("/api/v1/register", controller.RegisterHandler)
 	r.POST("/api/v1/login", controller.LoginHandler)
+	r.POST("/api/v1/register", controller.RegisterHandler)
+	r.GET("/api/v1/refreshToken", controller.RefreshTokenHandler)
 	return r
 }
