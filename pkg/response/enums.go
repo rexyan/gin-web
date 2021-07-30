@@ -8,6 +8,8 @@ const (
 	UserRegisterError           string = "30014"
 	UserLoginError              string = "30015"
 	RefreshTokenError           string = "30016"
+	AccessTokenFormatError      string = "30017"
+	AccessTokenInvalid          string = "30018"
 )
 
 var Message = map[string]string{
@@ -18,4 +20,6 @@ var Message = map[string]string{
 	UserRegisterError:           "用户注册错误",
 	UserLoginError:              "用户登录失败",
 	RefreshTokenError:           "获取 RefreshToken 失败",
+	AccessTokenFormatError:      "AccessToken 格式错误",
+	AccessTokenInvalid:          "无效的 AccessToken",
 }

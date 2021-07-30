@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 	"web_app/pkg/jwt"
 	"web_app/pkg/response"
 	v "web_app/pkg/validator"
@@ -24,7 +23,7 @@ func RefreshTokenHandler(c *gin.Context) {
 		return
 	}
 	user := userService.GetCurrentUser(c)
-	accessToken, _ := userService.GenerateJwtToken(strconv.FormatInt(user.UserID, 10), user.UserName)
+	accessToken, _ := userService.GenerateJwtToken(user.UserID, user.UserName)
 	response.BuildSuccessResponse(c, accessToken)
 }
 
@@ -71,7 +70,7 @@ func LoginHandler(c *gin.Context) {
 		response.BuildResponse(c, nil, response.UserLoginError, http.StatusBadRequest)
 		return
 	} else {
-		accessToken, refreshToken := userService.GenerateJwtToken(strconv.FormatInt(user.UserID, 10), user.UserName)
+		accessToken, refreshToken := userService.GenerateJwtToken(user.UserID, user.UserName)
 		response.BuildSuccessResponse(c, gin.H{
 			"user":          user,
 			"access_token":  accessToken,

@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 	"web_app/controller"
+	"web_app/middleware"
 	"web_app/pkg/logger"
 	"web_app/settings"
 
@@ -33,6 +34,6 @@ func Setup() *gin.Engine {
 
 	r.POST("/api/v1/login", controller.LoginHandler)
 	r.POST("/api/v1/register", controller.RegisterHandler)
-	r.GET("/api/v1/refreshToken", controller.RefreshTokenHandler)
+	r.GET("/api/v1/refreshToken", middleware.JwtAuthMiddleware, controller.RefreshTokenHandler)
 	return r
 }

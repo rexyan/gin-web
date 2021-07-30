@@ -11,20 +11,20 @@ const TokenExpireDuration = time.Hour * 2
 const RefreshExpireDuration = TokenExpireDuration * 10
 
 type CustomClaims struct {
-	UserID   string `json:"user_id"`
+	UserID   int64  `json:"user_id"`
 	UserName string `json:"user_name"`
 	jwt.StandardClaims
 }
 
-func generateJwtToken(userID, userName string, timeDuration time.Duration) (string, error) {
+func generateJwtToken(userID int64, userName string, timeDuration time.Duration) (string, error) {
 	var Secret = []byte(settings.Config.ServerConfig.Secret)
 	// 创建一个我们自己的声明
 	c := CustomClaims{
 		userID,
 		userName,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(), // 过期时间
-			Issuer:    settings.Config.ServerConfig.Name,          // 签发人
+			ExpiresAt: time.Now().Add(timeDuration).Unix(), // 过期时间
+			Issuer:    settings.Config.ServerConfig.Name,   // 签发人
 		},
 	}
 	// 使用指定的签名方法创建签名对象
@@ -33,11 +33,11 @@ func generateJwtToken(userID, userName string, timeDuration time.Duration) (stri
 	return token.SignedString(Secret)
 }
 
-func GenerateJwtRefreshToken(userID, userName string) (string, error) {
+func GenerateJwtRefreshToken(userID int64, userName string) (string, error) {
 	return generateJwtToken(userID, userName, RefreshExpireDuration)
 }
 
-func GenerateJwtAccessToken(userID, userName string) (string, error) {
+func GenerateJwtAccessToken(userID int64, userName string) (string, error) {
 	return generateJwtToken(userID, userName, TokenExpireDuration)
 }
 

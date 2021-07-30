@@ -53,7 +53,7 @@ func (uc *UserService) LoginService(param *validator.LoginValidator) (user *mode
 	return user, nil
 }
 
-func (uc *UserService) GenerateJwtToken(userID, userName string) (accessToken, refreshToken string) {
+func (uc *UserService) GenerateJwtToken(userID int64, userName string) (accessToken, refreshToken string) {
 	accessToken, _ = jwt.GenerateJwtAccessToken(userID, userName)
 	refreshToken, _ = jwt.GenerateJwtRefreshToken(userID, userName)
 	return
@@ -61,9 +61,10 @@ func (uc *UserService) GenerateJwtToken(userID, userName string) (accessToken, r
 
 func (uc *UserService) GetUserByID(userID int64) *models.User {
 	if user, err := userDao.GetByID(userID); err != nil {
+		return nil
+	} else {
 		return user
 	}
-	return nil
 }
 
 func (uc *UserService) GetCurrentUser(c *gin.Context) *models.User {
