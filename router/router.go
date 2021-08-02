@@ -1,6 +1,8 @@
 package router
 
 import (
+	gs "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
 	"web_app/controller"
 	"web_app/middleware"
@@ -8,6 +10,8 @@ import (
 	"web_app/settings"
 
 	"github.com/gin-gonic/gin"
+
+	_ "web_app/docs" // 千万不要忘了导入把你上一步生成的docs
 )
 
 func setRunMode() {
@@ -27,13 +31,24 @@ func setRunMode() {
 func Setup() *gin.Engine {
 	setRunMode()
 	r := gin.New()
+	// 全局中间件
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
-	r.GET("/health", func(context *gin.Context) {
+
+	// swagger
+	r.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
+
+	// v1 group
+	v1 := r.Group("/api/v1")
+	v1.GET("/health", func(context *gin.Context) {
 		context.JSON(http.StatusOK, settings.Config.ServerConfig.Name)
 	})
+	// 不需要 Jwt 认证的路由
+	v1.POST("/login", controller.LoginHandler)
+	v1.POST("/register", controller.RegisterHandler)
 
-	r.POST("/api/v1/login", controller.LoginHandler)
-	r.POST("/api/v1/register", controller.RegisterHandler)
-	r.GET("/api/v1/refreshToken", middleware.JwtAuthMiddleware, controller.RefreshTokenHandler)
+	// 需要 Jwt 认证的路由
+	v1.Use(middleware.JwtAuthMiddleware)
+	v1.GET("/refreshToken", controller.RefreshTokenHandler)
+	v1.GET("/community", controller.CommunityListHandler)
 	return r
 }

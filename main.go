@@ -21,6 +21,17 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title Gin Web
+// @version 1.0
+// @description Gin Web Project
+// @termsOfService http://yanrs.me
+// @contact.name runsha.yan
+// @contact.url http://yanrs.me
+// @contact.email rex_yan@126.com
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @host 127.0.0.1:8081
+// @BasePath /api/v1/
 func main() {
 	// 1. 加载配置
 	if err := settings.Init(); err != nil {

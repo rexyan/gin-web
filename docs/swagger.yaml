@@ -1,0 +1,54 @@
+basePath: /api/v1/
+definitions:
+  models.Community:
+    properties:
+      community_id:
+        description: 社区 ID
+        type: integer
+      community_name:
+        description: 社区名称
+        type: string
+      introduction:
+        description: 社区介绍
+        type: string
+    type: object
+host: 127.0.0.1:8081
+info:
+  contact:
+    email: rex_yan@126.com
+    name: runsha.yan
+    url: http://yanrs.me
+  description: Gin Web Project
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://yanrs.me
+  title: Gin Web
+  version: "1.0"
+paths:
+  /community:
+    get:
+      consumes:
+      - application/json
+      description: 获取社区列表接口
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Community'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: 获取社区列表接口
+      tags:
+      - 社区
+swagger: "2.0"

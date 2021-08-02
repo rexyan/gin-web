@@ -1,0 +1,81 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Gin Web Project",
+        "title": "Gin Web",
+        "termsOfService": "http://yanrs.me",
+        "contact": {
+            "name": "runsha.yan",
+            "url": "http://yanrs.me",
+            "email": "rex_yan@126.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:8081",
+    "basePath": "/api/v1/",
+    "paths": {
+        "/community": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取社区列表接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "社区"
+                ],
+                "summary": "获取社区列表接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Community"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Community": {
+            "type": "object",
+            "properties": {
+                "community_id": {
+                    "description": "社区 ID",
+                    "type": "integer"
+                },
+                "community_name": {
+                    "description": "社区名称",
+                    "type": "string"
+                },
+                "introduction": {
+                    "description": "社区介绍",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
