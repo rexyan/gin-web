@@ -1,7 +1,7 @@
 server:
   mode: "debug"
   name: "application"
-  port: 8080
+  port: 8081
   secret: "123"
 
 logger:

@@ -2,6 +2,7 @@ package validator
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
@@ -43,6 +44,15 @@ func InitTrans(locale string) (err error) {
 		return
 	}
 	return
+}
+
+func TransError(err validator.ValidationErrors) string {
+	var errStr []string
+	translate := err.Translate(Trans)
+	for _, v := range translate {
+		errStr = append(errStr, v)
+	}
+	return strings.Join(errStr, ",")
 }
 
 type RegisterValidator struct {

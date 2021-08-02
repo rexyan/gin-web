@@ -24,29 +24,34 @@ import (
 func main() {
 	// 1. 加载配置
 	if err := settings.Init(); err != nil {
+		fmt.Printf("settings init failed, err:%v\n", err)
 		return
 	}
 
 	// 2. 初始化日志
 	if err := logger.Init(settings.Config.LoggerConfig); err != nil {
+		fmt.Printf("logger init failed, err:%v\n", err)
 		return
 	}
 	defer zap.L().Sync()
 
 	// 3. 初始化 MySQL
 	if err := mysql.Init(settings.Config.MySQLConfig); err != nil {
+		fmt.Printf("mysql init failed, err:%v\n", err)
 		return
 	}
 	defer mysql.Close()
 
 	// 4. 初始化 Redis
 	if err := redis.Init(settings.Config.RedisConfig); err != nil {
+		fmt.Printf("redis init failed, err:%v\n", err)
 		return
 	}
 	defer redis.Close()
 
 	// snowflake ID 生成器
 	if err := snowflake.Init(); err != nil {
+		fmt.Printf("snowflake init failed, err:%v\n", err)
 		return
 	}
 

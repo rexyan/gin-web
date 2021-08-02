@@ -5,7 +5,6 @@ import (
 	"web_app/settings"
 
 	"github.com/go-redis/redis"
-	"go.uber.org/zap"
 )
 
 var rdb *redis.Client
@@ -22,7 +21,6 @@ func Init(redisConfig *settings.RedisConfig) (err error) {
 	})
 	_, err = rdb.Ping().Result()
 	if err != nil {
-		zap.L().Error("redis connect error", zap.Error(err))
 		return err
 	}
 	return nil

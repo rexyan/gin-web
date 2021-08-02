@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"web_app/settings"
 
-	"go.uber.org/zap"
-
 	"github.com/spf13/viper"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -24,7 +22,6 @@ func Init(mysqlConfig *settings.MySQLConfig) (err error) {
 	)
 	DB, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
-		zap.L().Error("sqlx connect mysql error", zap.Error(err))
 		return
 	}
 	DB.SetMaxOpenConns(viper.GetInt("mysql.maxOpenConns"))

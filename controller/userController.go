@@ -34,7 +34,7 @@ func RegisterHandler(c *gin.Context) {
 		zap.L().Error("registerValidator error", zap.Error(err))
 		validatorError, ok := err.(validator.ValidationErrors)
 		if ok {
-			response.BuildResponseWithMsg(c, nil, validatorError.Translate(v.Trans), response.ParamError, http.StatusBadRequest)
+			response.BuildResponseWithMsg(c, nil, v.TransError(validatorError), response.ParamError, http.StatusBadRequest)
 			return
 		}
 		response.BuildResponse(c, nil, response.ParamError, http.StatusBadRequest)
@@ -59,7 +59,7 @@ func LoginHandler(c *gin.Context) {
 		zap.L().Error("loginValidator error", zap.Error(err))
 		validatorError, ok := err.(validator.ValidationErrors)
 		if ok {
-			response.BuildResponseWithMsg(c, nil, validatorError.Translate(v.Trans), response.ParamError, http.StatusBadRequest)
+			response.BuildResponseWithMsg(c, nil, v.TransError(validatorError), response.ParamError, http.StatusBadRequest)
 			return
 		}
 		c.JSON(http.StatusBadRequest, err.Error())
