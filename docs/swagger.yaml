@@ -12,6 +12,34 @@ definitions:
         description: 社区介绍
         type: string
     type: object
+  validator.LoginValidator:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  validator.RegisterValidator:
+    properties:
+      email:
+        type: string
+      gender:
+        type: integer
+      password:
+        type: string
+      re_password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - re_password
+    - username
+    type: object
 host: 127.0.0.1:8081
 info:
   contact:
@@ -51,4 +79,75 @@ paths:
       summary: 获取社区列表接口
       tags:
       - 社区
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 登录
+      parameters:
+      - description: 登录信息
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/validator.LoginValidator'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 登录
+      tags:
+      - 认证
+  /refreshToken:
+    get:
+      consumes:
+      - application/json
+      description: 获取 RefreshToken
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 获取 RefreshToken
+      tags:
+      - 认证
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册
+      parameters:
+      - description: 注册参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/validator.RegisterValidator'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用户注册
+      tags:
+      - 认证
 swagger: "2.0"

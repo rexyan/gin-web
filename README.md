@@ -18,10 +18,16 @@ make build && make run
 ```
 
 ### Swagger
-1. 生成 swagger 文档
+1. 安装 [swag](https://github.com/swaggo/gin-swagger)
+```shell
+go get -u github.com/swaggo/swag/cmd/swag
+```
+
+2. 生成 swagger 文档
 ```shell
 swag init
 ```
-2. 访问地址
+
+3. 访问地址
 http://127.0.0.1:8081/swagger/index.html
 

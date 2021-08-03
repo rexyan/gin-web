@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"web_app/pkg/jwt"
 	"web_app/pkg/response"
 	v "web_app/pkg/validator"
 	"web_app/service"
@@ -16,17 +15,38 @@ import (
 
 var userService = new(service.UserService)
 
+// RefreshTokenHandler 获取 RefreshToken
+// @Summary 获取 RefreshToken
+// @Description 获取 RefreshToken
+// @Tags 认证
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /refreshToken [get]
 func RefreshTokenHandler(c *gin.Context) {
-	refreshToken := c.Query("refresh_token")
-	if _, err := jwt.ParseToken(refreshToken); err != nil {
-		response.BuildResponse(c, nil, response.RefreshTokenError, http.StatusBadRequest)
-		return
-	}
+	// 无需再次验证 jwt token，已经通过中间件验证
+	//refreshToken := c.Request.Header.Get(middleware.AuthorizationKey)
+	//if _, err := jwt.ParseToken(refreshToken); err != nil {
+	//	response.BuildResponse(c, nil, response.RefreshTokenError, http.StatusBadRequest)
+	//	return
+	//}
 	user := userService.GetCurrentUser(c)
 	accessToken, _ := userService.GenerateJwtToken(user.UserID, user.UserName)
 	response.BuildSuccessResponse(c, accessToken)
 }
 
+// RegisterHandler 用户注册
+// @Summary 用户注册
+// @Description 用户注册
+// @Tags 认证
+// @Accept application/json
+// @Produce application/json
+// @Param object body v.RegisterValidator true "注册参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /register [post]
 func RegisterHandler(c *gin.Context) {
 	// 参数校验
 	registerValidator := new(v.RegisterValidator)
@@ -53,6 +73,16 @@ func RegisterHandler(c *gin.Context) {
 	response.BuildSuccessResponse(c, "ok")
 }
 
+// LoginHandler 登录
+// @Summary 登录
+// @Description 登录
+// @Tags 认证
+// @Accept application/json
+// @Produce application/json
+// @Param object body v.LoginValidator true "登录信息"
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /login [post]
 func LoginHandler(c *gin.Context) {
 	loginValidator := new(v.LoginValidator)
 	if err := c.ShouldBindJSON(loginValidator); err != nil {
