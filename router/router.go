@@ -50,5 +50,6 @@ func Setup() *gin.Engine {
 	v1.Use(middleware.JwtAuthMiddleware)
 	v1.GET("/refreshToken", controller.RefreshTokenHandler)
 	v1.GET("/community", controller.CommunityListHandler)
+	v1.GET("/community/:id", controller.CommunityDetailHandler)
 	return r
 }

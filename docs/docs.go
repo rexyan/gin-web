@@ -73,6 +73,50 @@ var doc = `{
                 }
             }
         },
+        "/community/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取社区详情接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "社区"
+                ],
+                "summary": "获取社区详情接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "社区 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Community"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "security": [
@@ -201,8 +245,16 @@ var doc = `{
                     "description": "社区名称",
                     "type": "string"
                 },
+                "create_time": {
+                    "description": "这里是 time.Time 类型，数据库保存的为时间戳类型，如果需要转换，在连接数据库的时候加上 parseTime 参数",
+                    "type": "string"
+                },
                 "introduction": {
                     "description": "社区介绍",
+                    "type": "string"
+                },
+                "update_time": {
+                    "description": "更新时间",
                     "type": "string"
                 }
             }

@@ -11,6 +11,8 @@ const (
 	AccessTokenFormatError      string = "30017"
 	AccessTokenInvalid          string = "30018"
 	CommunityListError          string = "30019"
+	CommunityIDError            string = "30020"
+	CommunityDetailError        string = "30021"
 )
 
 var Message = map[string]string{
@@ -23,5 +25,7 @@ var Message = map[string]string{
 	RefreshTokenError:           "获取 RefreshToken 失败",
 	AccessTokenFormatError:      "AccessToken 格式错误",
 	AccessTokenInvalid:          "无效的 AccessToken",
-	CommunityListError: "获取社区列表错误",
+	CommunityListError:          "获取社区列表错误",
+	CommunityIDError:            "获取社区 ID 错误",
+	CommunityDetailError:        "获取社区详情错误",
 }
