@@ -13,6 +13,7 @@ const (
 	CommunityListError          string = "30019"
 	CommunityIDError            string = "30020"
 	CommunityDetailError        string = "30021"
+	CreatePostError             string = "30022"
 )
 
 var Message = map[string]string{
@@ -28,4 +29,5 @@ var Message = map[string]string{
 	CommunityListError:          "获取社区列表错误",
 	CommunityIDError:            "获取社区 ID 错误",
 	CommunityDetailError:        "获取社区详情错误",
+	CreatePostError:             "创建帖子错误",
 }

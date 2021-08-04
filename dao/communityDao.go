@@ -30,3 +30,11 @@ func (com *CommunityDao) CommunityByID(communityID int64) (community *models.Com
 		return communityInstance, nil
 	}
 }
+
+func (com *CommunityDao) CreatePost(newPost models.Post) (err error) {
+	sqlStr := "INSERT INTO gin_web.post (post_id, title, content, user_id, community_id) VALUES (?,?,?,?,?);"
+	if _, err := mysql.DB.Exec(sqlStr, newPost.PostID, newPost.Title, newPost.Content, newPost.UserId, newPost.CommunityId); err != nil {
+		return err
+	}
+	return nil
+}

@@ -1,13 +1,14 @@
 package router
 
 import (
-	gs "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
 	"web_app/controller"
 	"web_app/middleware"
 	"web_app/pkg/logger"
 	"web_app/settings"
+
+	gs "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	"github.com/gin-gonic/gin"
 
@@ -51,5 +52,6 @@ func Setup() *gin.Engine {
 	v1.GET("/refreshToken", controller.RefreshTokenHandler)
 	v1.GET("/community", controller.CommunityListHandler)
 	v1.GET("/community/:id", controller.CommunityDetailHandler)
+	v1.POST("/post", controller.CreatePostHandler)
 	return r
 }

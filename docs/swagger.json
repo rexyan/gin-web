@@ -141,6 +141,52 @@
                 }
             }
         },
+        "/post": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "创建帖子",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "社区"
+                ],
+                "summary": "创建帖子",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "社区 ID",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validator.CreatePostValidator"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Post"
+                        }
+                    }
+                }
+            }
+        },
         "/refreshToken": {
             "get": {
                 "security": [
@@ -244,6 +290,65 @@
                 }
             }
         },
+        "models.Post": {
+            "type": "object",
+            "properties": {
+                "community_id": {
+                    "description": "社区ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "帖子内容",
+                    "type": "string"
+                },
+                "create_time": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "post_id": {
+                    "description": "帖子 ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "帖子状态(默认1)",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "帖子名称",
+                    "type": "string"
+                },
+                "update_time": {
+                    "description": "更新时间",
+                    "type": "integer"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "validator.CreatePostValidator": {
+            "type": "object",
+            "required": [
+                "community_id",
+                "content",
+                "title"
+            ],
+            "properties": {
+                "community_id": {
+                    "description": "所属社区ID",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "名称",
+                    "type": "string"
+                }
+            }
+        },
         "validator.LoginValidator": {
             "type": "object",
             "required": [
@@ -252,9 +357,11 @@
             ],
             "properties": {
                 "password": {
+                    "description": "密码",
                     "type": "string"
                 },
                 "username": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -269,18 +376,23 @@
             ],
             "properties": {
                 "email": {
+                    "description": "邮箱",
                     "type": "string"
                 },
                 "gender": {
+                    "description": "性别",
                     "type": "integer"
                 },
                 "password": {
+                    "description": "密码",
                     "type": "string"
                 },
                 "re_password": {
+                    "description": "重复密码",
                     "type": "string"
                 },
                 "username": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }

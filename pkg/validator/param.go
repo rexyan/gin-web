@@ -55,15 +55,24 @@ func TransError(err validator.ValidationErrors) string {
 	return strings.Join(errStr, ",")
 }
 
+// 注册参数校验
 type RegisterValidator struct {
-	Username   string `json:"username" binding:"required"`
-	Password   string `json:"password" binding:"required"`
-	RePassword string `json:"re_password" binding:"required,eqfield=Password"`
-	Email      string `json:"email" binding:"required,email"`
-	Gender     uint8  `json:"gender" binding:"gte=0,lte=1"`
+	Username   string `json:"username" binding:"required"`                     // 用户名
+	Password   string `json:"password" binding:"required"`                     // 密码
+	RePassword string `json:"re_password" binding:"required,eqfield=Password"` // 重复密码
+	Email      string `json:"email" binding:"required,email"`                  // 邮箱
+	Gender     uint8  `json:"gender" binding:"gte=0,lte=1"`                    // 性别
 }
 
+// 登录参数校验
 type LoginValidator struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Username string `json:"username" binding:"required"` // 用户名
+	Password string `json:"password" binding:"required"` // 密码
+}
+
+// 创建帖子参数校验
+type CreatePostValidator struct {
+	Title       string `json:"title" binding:"required"`        // 名称
+	Content     string `json:"content" binding:"required"`      // 内容
+	CommunityId uint8  `json:"community_id" binding:"required"` // 所属社区ID
 }
