@@ -28,7 +28,7 @@ definitions:
         type: string
       create_time:
         description: 创建时间
-        type: integer
+        type: string
       post_id:
         description: 帖子 ID
         type: integer
@@ -40,7 +40,7 @@ definitions:
         type: string
       update_time:
         description: 更新时间
-        type: integer
+        type: string
       user_id:
         description: 用户ID
         type: integer
@@ -72,6 +72,33 @@ definitions:
     required:
     - password
     - username
+    type: object
+  validator.PostDetail:
+    properties:
+      community_id:
+        description: 社区 ID
+        type: integer
+      community_name:
+        description: 社区名称
+        type: string
+      content:
+        description: 帖子内容
+        type: string
+      create_time:
+        description: 帖子创建时间
+        type: string
+      post_id:
+        description: 帖子 ID
+        type: integer
+      title:
+        description: 帖子名称
+        type: string
+      user_id:
+        description: 用户 ID
+        type: integer
+      user_name:
+        description: 用户名称
+        type: string
     type: object
   validator.RegisterValidator:
     properties:
@@ -214,6 +241,67 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 创建帖子
+      tags:
+      - 社区
+  /post/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 帖子详情
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/validator.PostDetail'
+      security:
+      - ApiKeyAuth: []
+      summary: 帖子详情
+      tags:
+      - 社区
+  /posts:
+    get:
+      consumes:
+      - application/json
+      description: 帖子列表
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: string
+      - description: 每页大小
+        in: query
+        name: page_size
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/validator.PostDetail'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: 帖子列表
       tags:
       - 社区
   /refreshToken:

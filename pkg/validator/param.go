@@ -3,6 +3,7 @@ package validator
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
@@ -74,5 +75,16 @@ type LoginValidator struct {
 type CreatePostValidator struct {
 	Title       string `json:"title" binding:"required"`        // 名称
 	Content     string `json:"content" binding:"required"`      // 内容
-	CommunityId uint8  `json:"community_id" binding:"required"` // 所属社区ID
+	CommunityId int64  `json:"community_id" binding:"required"` // 所属社区ID
+}
+
+type PostDetail struct {
+	PostID        int64     `json:"post_id"`        // 帖子 ID
+	Title         string    `json:"title"`          // 帖子名称
+	Content       string    `json:"content"`        // 帖子内容
+	UserId        int64     `json:"user_id"`        // 用户 ID
+	UserName      string    `json:"user_name"`      // 用户名称
+	CommunityId   int64     `json:"community_id"`   // 社区 ID
+	CommunityName string    `json:"community_name"` // 社区名称
+	CreateTime    time.Time `json:"create_time"`    // 帖子创建时间
 }

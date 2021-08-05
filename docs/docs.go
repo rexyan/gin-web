@@ -202,6 +202,102 @@ var doc = `{
                 }
             }
         },
+        "/post/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "帖子详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "社区"
+                ],
+                "summary": "帖子详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "帖子 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/validator.PostDetail"
+                        }
+                    }
+                }
+            }
+        },
+        "/posts": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "帖子列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "社区"
+                ],
+                "summary": "帖子列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "每页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/validator.PostDetail"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/refreshToken": {
             "get": {
                 "security": [
@@ -318,7 +414,7 @@ var doc = `{
                 },
                 "create_time": {
                     "description": "创建时间",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "post_id": {
                     "description": "帖子 ID",
@@ -334,7 +430,7 @@ var doc = `{
                 },
                 "update_time": {
                     "description": "更新时间",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "user_id": {
                     "description": "用户ID",
@@ -377,6 +473,43 @@ var doc = `{
                 },
                 "username": {
                     "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "validator.PostDetail": {
+            "type": "object",
+            "properties": {
+                "community_id": {
+                    "description": "社区 ID",
+                    "type": "integer"
+                },
+                "community_name": {
+                    "description": "社区名称",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "帖子内容",
+                    "type": "string"
+                },
+                "create_time": {
+                    "description": "帖子创建时间",
+                    "type": "string"
+                },
+                "post_id": {
+                    "description": "帖子 ID",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "帖子名称",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户 ID",
+                    "type": "integer"
+                },
+                "user_name": {
+                    "description": "用户名称",
                     "type": "string"
                 }
             }

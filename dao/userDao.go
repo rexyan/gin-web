@@ -22,7 +22,7 @@ func (dao *UserDao) Insert(userInstance *models.User) (err error) {
 	return err
 }
 
-func (dao *UserDao) GetByName(name string) (user *models.User, err error) {
+func (dao *UserDao) UserByName(name string) (user *models.User, err error) {
 	// 根据用户名查询用户
 	var userInstance models.User
 	sqlStr := "select user_id, username, password, email, gender from user where username=?"
@@ -37,7 +37,7 @@ func (dao *UserDao) GetByName(name string) (user *models.User, err error) {
 	return &userInstance, nil
 }
 
-func (dao *UserDao) GetByID(userID int64) (user *models.User, err error) {
+func (dao *UserDao) UserByID(userID int64) (user *models.User, err error) {
 	// 根据用户ID查询用户
 	var userInstance models.User
 	sqlStr := "select user_id, username, password, email, gender from user where user_id=?"
